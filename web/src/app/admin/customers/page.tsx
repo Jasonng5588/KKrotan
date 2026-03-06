@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { adminSupabase } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { ClientCustomerEditForm } from './ClientCustomerEditForm'
@@ -25,6 +26,11 @@ async function toggleAdminRole(id: string, newRole: string) {
 }
 
 export default async function AdminCustomersPage() {
+
+    const { cookies } = require('next/headers')
+    const isAdmin = cookies().get('kkrotan_admin_session')?.value === 'kkrotan_admin_authenticated_2026'
+    if (!isAdmin) redirect('/admin/login')
+
     const supabase = adminSupabase()
 
     const { data: customers } = await supabase

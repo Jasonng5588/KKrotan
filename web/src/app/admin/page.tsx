@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { adminSupabase } from '@/lib/supabase/admin'
 import Link from 'next/link'
 

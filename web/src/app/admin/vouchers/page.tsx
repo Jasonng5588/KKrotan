@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { adminSupabase } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
@@ -33,6 +34,11 @@ async function deleteVoucher(id: string) {
 }
 
 export default async function AdminVouchersPage() {
+
+    const { cookies } = require('next/headers')
+    const isAdmin = cookies().get('kkrotan_admin_session')?.value === 'kkrotan_admin_authenticated_2026'
+    if (!isAdmin) redirect('/admin/login')
+
     const supabase = adminSupabase()
     const { data: vouchers } = await supabase.from('vouchers').select('*').order('created_at', { ascending: false })
 

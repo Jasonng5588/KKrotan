@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { adminSupabase } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
@@ -18,6 +19,11 @@ const statusColors: Record<string, string> = {
 }
 
 export default async function AdminQuotesPage() {
+
+    const { cookies } = require('next/headers')
+    const isAdmin = cookies().get('kkrotan_admin_session')?.value === 'kkrotan_admin_authenticated_2026'
+    if (!isAdmin) redirect('/admin/login')
+
     const supabase = adminSupabase()
     const { data: quotes } = await supabase
         .from('quotes')

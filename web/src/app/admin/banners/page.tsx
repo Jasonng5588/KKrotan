@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { adminSupabase } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
@@ -35,6 +36,11 @@ async function deleteBanner(id: string) {
 }
 
 export default async function AdminBannersPage() {
+
+    const { cookies } = require('next/headers')
+    const isAdmin = cookies().get('kkrotan_admin_session')?.value === 'kkrotan_admin_authenticated_2026'
+    if (!isAdmin) redirect('/admin/login')
+
     const supabase = adminSupabase()
     const { data: banners } = await supabase.from('banners').select('*').order('display_order')
 

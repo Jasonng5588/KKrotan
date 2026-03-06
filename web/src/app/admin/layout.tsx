@@ -1,24 +1,15 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { headers } from 'next/headers'
-import { isAdminAuthenticated } from './auth-utils'
+import { cookies } from 'next/headers'
 import { adminLogout } from './auth'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-    const headersList = headers()
-    const pathname = headersList.get('x-pathname') || ''
+    const cookieStore = cookies()
+    const isAdmin = cookieStore.get('kkrotan_admin_session')?.value === 'kkrotan_admin_authenticated_2026'
 
-    // Don't check auth on the login page — prevents infinite redirect loop
-    const isLoginPage = pathname === '/admin/login' || pathname.startsWith('/admin/login')
-    if (!isLoginPage) {
-        const isAdmin = isAdminAuthenticated()
-        if (!isAdmin) {
-            redirect('/admin/login')
-        }
-    }
-
-    // Render login page without sidebar
-    if (isLoginPage) {
+    // If they aren't admin, WE DO NOT render the sidebar, just the raw children (which will be the Login form)
+    // The individual Admin pages (Dashboard, Products, etc.) will protect THEMSELVES and redirect to `/admin/login`.
+    if (!isAdmin) {
         return <>{children}</>
     }
 
