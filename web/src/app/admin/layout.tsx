@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { adminLogout } from './auth'
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-    const cookieStore = cookies()
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+    const cookieStore = await cookies()
     const isAdmin = cookieStore.get('kkrotan_admin_session')?.value === 'kkrotan_admin_authenticated_2026'
 
     // If they aren't admin, WE DO NOT render the sidebar, just the raw children (which will be the Login form)

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { logout } from '@/app/login/actions'
+import { logout } from '@/app/(store)/login/actions'
 
 interface NavbarClientProps {
     isLoggedIn: boolean

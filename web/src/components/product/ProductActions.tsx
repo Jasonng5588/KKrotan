@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { addToCart } from '@/app/cart/actions'
-import { addToWishlist } from '@/app/profile/wishlist/actions'
+import { addToCart } from '@/app/(store)/cart/actions'
+import { addToWishlist } from '@/app/(store)/profile/wishlist/actions'
 import { useRouter } from 'next/navigation'
 
 interface ProductActionsProps {

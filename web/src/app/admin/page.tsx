@@ -1,10 +1,16 @@
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 import { adminSupabase } from '@/lib/supabase/admin'
 import Link from 'next/link'
 
 export const revalidate = 0
 
 export default async function AdminDashboardPage() {
+    // Auth guard: redirect to login if not authenticated
+    const cookieStore = await cookies()
+    const isAdmin = cookieStore.get('kkrotan_admin_session')?.value === 'kkrotan_admin_authenticated_2026'
+    if (!isAdmin) redirect('/admin/login')
+
     const supabase = adminSupabase()
 
     const [

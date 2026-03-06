@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { requireAdmin } from '../auth-utils'
 import { adminSupabase } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
@@ -12,10 +13,7 @@ async function deleteReview(id: string) {
 }
 
 export default async function AdminReviewsPage() {
-
-    const { cookies } = require('next/headers')
-    const isAdmin = cookies().get('kkrotan_admin_session')?.value === 'kkrotan_admin_authenticated_2026'
-    if (!isAdmin) redirect('/admin/login')
+    await requireAdmin()
 
     const supabase = adminSupabase()
     const { data: reviews } = await supabase
